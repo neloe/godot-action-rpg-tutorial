@@ -7,6 +7,11 @@ const ACCELERATION = 500
 const MAX_SPEED = 80
 const FRICTION = 500
 
+#var animationPlayer = null
+#func _ready():
+#	animationPlayer = $AnimationPlayer
+
+onready var animationPlayer = $AnimationPlayer
 
 # Called when the node enters the scene tree for the first time.
 	
@@ -29,10 +34,15 @@ func _physics_process(delta):
 	input_vector = input_vector.normalized()
 	
 	if input_vector != Vector2.ZERO:
+		if input_vector.x > 0:
+			animationPlayer.play("RunRight")
+		else:
+			animationPlayer.play("RunLeft")
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
 		#velocity += input_vector * ACCELERATION * delta
 		#velocity = velocity.clamped(MAX_SPEED)
 	else:
+		animationPlayer.play("IdleRight")
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 	
 	# this returns the new velocity
